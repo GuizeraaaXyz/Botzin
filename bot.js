@@ -7,7 +7,7 @@ function startBot(username = 'cachorroAlt_') {
   const bot = mineflayer.createBot({
     host: 'naturalcraft.online',
     port: 25565,
-    username,
+    username: 'cachorroAlt_,
     version: '1.21.1' // força versão correta
   });
 
@@ -74,3 +74,4 @@ function startBot(username = 'cachorroAlt_') {
 }
 
 module.exports = { startBot };
+
