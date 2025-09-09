@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bot Minecraft</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div class="container">
+  <h1>Bot Minecraft</h1>
+
+  <div class="controls">
+    <input type="text" id="username" placeholder="Nome do bot">
+    <button id="start">Iniciar Bot</button>
+  </div>
+
+  <div class="chat" id="chat"></div>
+
+  <div class="controls">
+    <input type="text" id="message" placeholder="Mensagem para o chat">
+    <button id="send">Enviar Chat</button>
+    <button id="kick">Kitar Bot</button>
+  </div>
+</div>
+
+<script>
+const chatDiv = document.getElementById('chat');
+const startBtn = document.getElementById('start');
+const sendBtn = document.getElementById('send');
+const kickBtn = document.getElementById('kick');
+
+function addMessage(msg) {
+  const div = document.createElement('div');
+  div.className = 'message';
+  div.textContent = msg;
+  chatDiv.appendChild(div);
+  chatDiv.scrollTop = chatDiv.scrollHeight;
+}
+
+// Logs em tempo real
+function startLogStream() {
+  const evtSource = new EventSource('/logs');
+  evtSource.onmessage = (e) => addMessage(e.data);
+}
+
+startBtn.addEventListener('click', () => {
+  const username = document.getElementById('username').value;
+  fetch('/start-bot', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username })
+  })
+  .then(res => res.text())
+  .then(msg => addMessage(msg))
+  .then(() => startLogStream());
+});
+
+sendBtn.addEventListener('click', () => {
+  const message = document.getElementById('message').value;
+  fetch('/send-chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message })
+  });
+  addMessage(`<Você>: ${message}`);
+  document.getElementById('message').value = '';
+});
+
+kickBtn.addEventListener('click', () => {
+  fetch('/kick-bot', { method: 'POST' });
+  addMessage('Bot kickado manualmente!');
+});
+</script>
+</body>
+</html>
