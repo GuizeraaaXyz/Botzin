@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="container">
-  <h1>Bot Minecraft</h1>
+  <h1>Botzin dos renegadokkk</h1>
 
   <div class="controls">
     <button id="start">Iniciar Bot</button>
@@ -44,11 +44,9 @@ function startLogStream() {
 }
 
 startBtn.addEventListener('click', () => {
-  const username = 'cachorroAlt_;
   fetch('/start-bot', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username })
   })
   .then(res => res.text())
   .then(msg => addMessage(msg))
@@ -73,4 +71,3 @@ kickBtn.addEventListener('click', () => {
 </script>
 </body>
 </html>
-
